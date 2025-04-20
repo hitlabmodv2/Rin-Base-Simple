@@ -21,86 +21,42 @@ class RinOkumura {
         if (!text.includes('tiktok')) throw '⚠️Masukan Link TikTok !'
         const isHd = m.args.includes("--hd");
         const input = text.replace(/--\w+(\=\w+)?/g, "").trim();
-        const musically = await Scraper.musicaldown(input);
+        const tikwm = await Scraper.tikwm(input);
 
         let caption = `📁 Downloader Tiktok
-> • *Title:* ${musically.desc || ''}
-> • *Author:* ${musically.author || ''}`;
+> • *Title:* ${tikwm.metadata.title || ''}
+> • *Author:* ${tikwm.metadata.author.nickname || ''}`;
 
-        if (!isHd) {
-            if (musically.type === "video") {
-                caption += `\n> • *Type:* Video\n Reply Pesan Kalau Mau Hd Video Ketik 'hd'`;
-                await conn.sendAliasMessage(m.chat, {
-                    video: {
-                        url: musically.video
-                    },
-                    caption
-                }, [{
-                    alias: 'hd',
-                    response: '.tiktok ' + input + ' --hd'
-                }], m);
-                await conn.sendMessage(m.chat, {
-                    audio: {
-                        url: musically.audio
-                    },
-                    mimetype: 'audio/mpeg'
-                }, {
-                    quoted: m
-                });
-            } else if (musically.type === "slide") {
-                caption += `\n> • *Type:* Image`
-                if (musically.image.length > 1) {
-                    let medias = []
-                    for (let i of musically.image) {
-                        medias.push({
-                            type: 'image',
-                            data: {
-                                url: i
-                            }
-                        });
-                    };
-                    await conn.sendAlbumMessage(m.cht, medias, {
-                        caption: caption,
-                        quoted: m
-                    });
-                } else {
-                    await conn.sendMessage(m.cht, {
-                        image: {
-                            url: musically.image[0]
-                        },
-                        caption
-                    }, {
-                        quoted: m
-                    });
-                    await conn.sendMessage(m.chat, {
-                        audio: {
-                            url: musically.audio
-                        },
-                        mimetype: 'audio/mpeg'
-                    }, {
-                        quoted: m
-                    });
-                };
-            }
-        } else if (isHd) {
-            caption += `\n> • *Type:* Video\n Reply Pesan Kalau Mau Hd Video Ketik 'hd'`
-            await conn.sendMessage(m.chat, {
+        if (tikwm.type === "video") {
+            caption += `\n> • *Type:* Video`;
+            await conn.sendAliasMessage(m.chat, {
                 video: {
-                    url: musically.video_hd
+                    url: tikwm.download.video
                 },
-                caption
+                caption,
             }, {
                 quoted: m
             });
-
             await conn.sendMessage(m.chat, {
                 audio: {
-                    url: musically.audio
+                    url: tikwm.download.music.play
                 },
                 mimetype: 'audio/mpeg'
             }, {
                 quoted: m
             });
+        } else if (tikwm.type === "image") {
+            caption += `\n> • *Type:* Image`
+            for (let i of tikwm.download.images) {
+                await conn.sendMessage(m.cht, {
+                    image: {
+                        url: i
+                    },
+                    caption
+                }, {
+                    quoted: m
+                });
+            }
         }
     };
 };
