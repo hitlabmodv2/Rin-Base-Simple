@@ -1,13 +1,20 @@
 const fs = require('node:fs');
 
+const ftpick = [
+  "https://files.catbox.moe/118nmm.jpg",
+  "https://files.catbox.moe/r5h96m.jpg",
+  "https://files.catbox.moe/cwe31b.jpg"
+]
+const geturl = ftpick[Math.floor(Math.random() * ftpick.length)]
+
 const config = {
     owner: ["6283136099660"],
     name: "Rin-Kun",
     ownername: 'Leooxzy', 
     ownername2: 'Dxyz',
-    image: { url: 'https://i.pinimg.com/1200x/a0/91/28/a09128ba3e6cb7b34f6df2f2c9938410.jpg' }, //thumbnail: fs.readFileSync('./image/tambahkan-ft-trus-kasih-nama')
+    image: { url: 'https://files.catbox.moe/8h6ylu.jpg' }, //thumbnail: fs.readFileSync('./image/tambahkan-ft-trus-kasih-nama')
     thumbnail: {
-      thumbnailUrl: 'https://i.pinimg.com/1200x/a0/91/28/a09128ba3e6cb7b34f6df2f2c9938410.jpg'
+      thumbnailUrl: geturl
       //thumbnail: fs.readFileSync('./image/tambahkan-ft-trus-kasih-nama')
     },
     prefix: [".", "?", "!", "/", "#"], //Tambahin sendiri prefix nya kalo kurang
