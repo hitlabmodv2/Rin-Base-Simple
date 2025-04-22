@@ -1,9 +1,10 @@
 /**
  * ======================================
- * @Scrape: Tikwm
+ * @Scrape: ttsave
+ * @Sumber: Daffa
  * @type: cjs
  * @source: https://whatsapp.com/channel/0029VadFS3r89inc7Jjus03W
- * @web: https://tikwm.com/
+ * @web: https://ttsave.app
  * @note: no apus wm ini credit dxyz
  * ======================================
 **/
