@@ -9,6 +9,7 @@ let yukio = async (m, {
     conn,
     text,
     Scraper,
+    Uploader,
     Func
 }) => {
     if (!text) throw '⚠️Masukan Nama Lagu Yg Pengen Anda Cari !'
@@ -44,11 +45,13 @@ let yukio = async (m, {
     }, {
         quoted: m
     });
-    const ytdl = await Scraper.amdl(result.url, 'audio', '320k')
-    const size = await Func.getSize(ytdl.download);
+    const ytdl = await Scraper.savetube.download(result.url, 'mp3');
+    const getArray = await axios.get(ytdl.result.download, { responseType: 'arraybuffer' });
+    const tmp = await Uploader.tmpfiles(getArray.data);
+    const size = await Func.getSize(tmp);
     conn.sendMessage(m.chat, {
         audio: {
-            url: ytdl.download
+            url: ytdl.result.download
         },
         mimetype: 'audio/mpeg',
         contextInfo: {
@@ -56,7 +59,7 @@ let yukio = async (m, {
             forwardingScore: 99999,
             externalAdReply: {
                 title: result.title,
-                body: result.timestamp + ' / ' + size + ' / ' + ytdl.format,
+                body: result.timestamp + ' / ' + size + ' / ' + ytdl.result.format,
                 mediaType: 1,
                 thumbnailUrl: result.thumbnail,
                 renderLargerThumbnail: false,
