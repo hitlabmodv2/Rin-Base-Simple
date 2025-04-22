@@ -1,8 +1,12 @@
-/*
- *@ Script Based: Neko/Hanako
- *@ Remake Bagian: Help, Tags Command
- *@ Ch: https://whatsapp.com/channel/0029VadFS3r89inc7Jjus03W
-*/
+/**
+ * ======================================
+ * @Script_Based: Neko/Hanako
+ * @Remake_Bagian: Help, Tags Command
+ * @Type: cjs
+ * @Ch: https://whatsapp.com/channel/0029VadFS3r89inc7Jjus03W
+ * @Note: no apus wm ini credit dxyz
+ * ======================================
+**/
 
 const config = require("./settings.js");
 const Func = require("./lib/function.js");
