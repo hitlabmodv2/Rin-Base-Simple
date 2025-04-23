@@ -24,7 +24,7 @@ const {
 const chalk = require("chalk");
 
 module.exports = async (m, sock, store) => {
-  const client = conn = DekuGanz = sock;
+  const client = ctx = conn = DekuGanz = sock;
   try {
      require("./lib/system.js")(m, sock, store);
   } catch (e) {
@@ -87,6 +87,7 @@ module.exports = async (m, sock, store) => {
           plugin.events.call(sock, m, {
             sock,
             client,
+            ctx,
             conn,
             DekuGanz,
             Func,
@@ -107,6 +108,7 @@ module.exports = async (m, sock, store) => {
           plugin.before.call(sock, m, {
             sock,
             client,
+            ctx,
             conn,
             DekuGanz,
             Func,
@@ -172,6 +174,7 @@ module.exports = async (m, sock, store) => {
         await plugin(m, {
           sock,
           client,
+          ctx,
           conn,
           DekuGanz,
           config,
