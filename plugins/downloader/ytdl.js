@@ -5,6 +5,8 @@
 // By: Leooxzy
 // Bio cr: Krz
 
+let axios = require('axios');
+
 let yukio = async (m, {
     conn,
     text,
@@ -47,15 +49,14 @@ let yukio = async (m, {
             }, {
                 quoted: m
             });
-            const ytdl = await Scraper.savetube.download(result.url, '720');
-            const getArray = await axios.get(ytdl.result.download, {
+            const ytdl = await Scraper.amdl.convert(result.url, 'mp4', '720p', false);
+            const { data: getArray } = await axios.get(ytdl.result.download, {
                 responseType: 'arraybuffer'
             });
+            const size = await Func.getSize(ytdl.result.download)
             if (getArray > 100 * 1024 * 1024) {
                 await sock.sendMessage(m.cht, {
-                    document: {
-                        url: ytdl.result.download
-                    },
+                    document: Buffer.from(getArray),
                     mimetype: "audio/mpeg",
                     fileName: `${result.title}.mp3`,
                 }, {
@@ -63,9 +64,7 @@ let yukio = async (m, {
                 });
             } else {
                 conn.sendMessage(m.chat, {
-                    video: {
-                        url: ytdl.result.download
-                    },
+                    video: Buffer.from(getArray),
                     caption: 'Title: ' + result.title,
                 }, {
                     quoted: m
@@ -107,17 +106,14 @@ let yukio = async (m, {
             }, {
                 quoted: m
             });
-            const ytdl = await Scraper.savetube.download(result.url, 'mp3');
-            const getArray = await axios.get(ytdl.result.download, {
+            const ytdl = await Scraper.amdl.convert(result.url, 'mp3', '320k', true);
+            const { data: getArray } = await axios.get(ytdl.result.download, {
                 responseType: 'arraybuffer'
             });
-            const tmp = await Uploader.tmpfiles(getArray.data);
-            const size = await Func.getSize(tmp);
+            const size = await Func.getSize(ytdl.result.download);
             if (getArray > 100 * 1024 * 1024) {
                 await sock.sendMessage(m.cht, {
-                    document: {
-                        url: ytdl.result.download
-                    },
+                    document: Buffer.from(getArray),
                     mimetype: "audio/mpeg",
                     fileName: `${result.title}.mp3`,
                 }, {
@@ -125,9 +121,7 @@ let yukio = async (m, {
                 });
             } else {
                 conn.sendMessage(m.chat, {
-                    audio: {
-                        url: ytdl.result.download
-                    },
+                    audio: Buffer.from(getArray),
                     mimetype: 'audio/mpeg',
                     contextInfo: {
                         isForwarded: true,
