@@ -46,6 +46,7 @@ module.exports = async (m, sock, store) => {
     store.groupMetadata = await sock.groupFetchAllParticipating();
   }
 
+  const participant = (m.isGroup ? m.metadata.participants : []) || [];
   const isPrems = db.list().user[m.sender].premium.status;
   const isBanned = db.list().user[m.sender].banned.status;
   const isAdmin = m.isAdmin;
@@ -125,8 +126,7 @@ module.exports = async (m, sock, store) => {
       }
       
       const cmd = usedPrefix
-        ? m.command.toLowerCase() === plugin.command ||
-          plugin?.command?.includes(m.command.toLowerCase())
+        ? plugin.command.includes(m.command.toLowerCase())
         : "";
       if (cmd) {
          if (plugin.loading) {
