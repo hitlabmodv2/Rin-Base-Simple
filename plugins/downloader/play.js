@@ -5,6 +5,8 @@
 // By: Leooxzy
 // Bio cr: Krz
 
+const axios = require('axios');
+
 let yukio = async (m, {
     conn,
     text,
@@ -45,14 +47,11 @@ let yukio = async (m, {
     }, {
         quoted: m
     });
-    const ytdl = await Scraper.savetube.download(result.url, 'mp3');
-    const getArray = await axios.get(ytdl.result.download, { responseType: 'arraybuffer' });
-    const tmp = await Uploader.tmpfiles(getArray.data);
-    const size = await Func.getSize(tmp);
+    const ytdl = await Scraper.amdl.convert(result.url, 'mp3', '320k', true);
+    const { data: getArray } = await axios.get(ytdl.result.download, { responseType: 'arraybuffer' });
+    const size = await Func.getSize(ytdl.result.download);
     conn.sendMessage(m.chat, {
-        audio: {
-            url: ytdl.result.download
-        },
+        audio: Buffer.from(getArray),
         mimetype: 'audio/mpeg',
         contextInfo: {
             isForwarded: true,
