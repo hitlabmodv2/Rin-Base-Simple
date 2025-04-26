@@ -54,7 +54,7 @@ let yukio = async (m, {
                 responseType: 'arraybuffer'
             });
             const size = await Func.getSize(ytdl.result.download)
-            if (getArray > 100 * 1024 * 1024) {
+            if (size > 100 * 1024 * 1024) {
                 await sock.sendMessage(m.cht, {
                     document: Buffer.from(getArray),
                     mimetype: "audio/mpeg",
@@ -111,7 +111,7 @@ let yukio = async (m, {
                 responseType: 'arraybuffer'
             });
             const size = await Func.getSize(ytdl.result.download);
-            if (getArray > 100 * 1024 * 1024) {
+            if (size > 100 * 1024 * 1024) {
                 await sock.sendMessage(m.cht, {
                     document: Buffer.from(getArray),
                     mimetype: "audio/mpeg",
