@@ -5,6 +5,7 @@
 // By: Leooxzy
 // Bio cr: Krz
 
+
 let axios = require('axios');
 
 let yukio = async (m, {
@@ -49,22 +50,38 @@ let yukio = async (m, {
             }, {
                 quoted: m
             });
-            const ytdl = await Scraper.amdl.convert(result.url, 'mp4', '720p', false);
-            const { data: getArray } = await axios.get(ytdl.result.download, {
+            let ytdl;
+            let format;
+                try {
+                    const {
+                        result: savetube
+                    } = await Scraper.savetube.download(text, "720");
+                    format = 'mp3';
+                    ytdl = savetube.download;
+                } catch (e) {
+                    try {
+                        const ddownr = await Scraper.ddownr.download(text, '720');
+                        format = '720';
+                        ytdl = ddownr.downloadUrl;
+                    } catch (e) {}
+                }
+            const buff = await axios.get(ytdl, {
                 responseType: 'arraybuffer'
             });
-            const size = await Func.getSize(ytdl.result.download)
+            const array = Buffer.from(buff.data)
+            const url = await Uploader.tmpfiles(array);
+            const size = await Func.getSize(url);
             if (size > 100 * 1024 * 1024) {
-                await sock.sendMessage(m.cht, {
-                    document: Buffer.from(getArray),
-                    mimetype: "audio/mpeg",
-                    fileName: `${result.title}.mp3`,
+                await sock.sendMessage(m.chat, {
+                    document: Buffer.from(buff.data),
+                    mimetype: "video/mp4",
+                    fileName: `${result.title}.mp4`,
                 }, {
                     quoted: m
                 });
             } else {
                 conn.sendMessage(m.chat, {
-                    video: Buffer.from(getArray),
+                    video: Buffer.from(buff.data),
                     caption: 'Title: ' + result.title,
                 }, {
                     quoted: m
@@ -106,29 +123,46 @@ let yukio = async (m, {
             }, {
                 quoted: m
             });
-            const ytdl = await Scraper.amdl.convert(result.url, 'mp3', '320k', true);
-            const { data: getArray } = await axios.get(ytdl.result.download, {
+            let ytdl;
+            let format;
+
+                try {
+                    const {
+                        result: savetube
+                    } = await Scraper.savetube.download(text, "mp3");
+                    format = 'mp3';
+                    ytdl = savetube.download;
+                } catch (e) {
+                    try {
+                        const ddownr = await Scraper.ddownr.download(finalUrl, 'mp3');
+                        format = 'mp3';
+                        ytdl = ddownr.downloadUrl;
+                    } catch (e) {}
+                }
+
+            const buff = await axios.get(ytdl, {
                 responseType: 'arraybuffer'
             });
-            const size = await Func.getSize(ytdl.result.download);
+            const url = await Uploader.tmpfiles(buff.data);
+            const size = await Func.getSize(url);
             if (size > 100 * 1024 * 1024) {
                 await sock.sendMessage(m.cht, {
-                    document: Buffer.from(getArray),
+                    document: Buffer.from(buff.data),
                     mimetype: "audio/mpeg",
                     fileName: `${result.title}.mp3`,
                 }, {
                     quoted: m
                 });
             } else {
-                conn.sendMessage(m.chat, {
-                    audio: Buffer.from(getArray),
+                await conn.sendMessage(m.chat, {
+                    audio: Buffer.from(buff.data),
                     mimetype: 'audio/mpeg',
                     contextInfo: {
                         isForwarded: true,
                         forwardingScore: 99999,
                         externalAdReply: {
                             title: result.title,
-                            body: result.timestamp + ' / ' + size + ' / ' + ytdl.result.format,
+                            body: result.timestamp + ' / ' + size + ' / ' + format,
                             mediaType: 1,
                             thumbnailUrl: result.thumbnail,
                             renderLargerThumbnail: false,
