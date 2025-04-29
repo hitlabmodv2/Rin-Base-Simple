@@ -30,7 +30,6 @@
     "@rifandavinci/yt-scraper": "^1.1.5",
     "@vioo/apis": "latest",
     "@vreden/youtube_scraper": "^1.2.4",
-    "akiraa-wb": "^2.0.2",
     "async-lock": "^1.4.1",
     "awesome-phonenumber": "^2.64.0",
     "axios": "^1.7.9",
