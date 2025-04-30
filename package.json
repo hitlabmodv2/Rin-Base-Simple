@@ -1,6 +1,6 @@
 {
   "name": "Rin-Base",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "description": "- WhatsApp bot using Library Baileys",
   "main": "index.js",
   "type": "commonjs",
@@ -16,7 +16,7 @@
   "keywords": [
     "botwa"
   ],
-  "author": "HanakoBotz",
+  "author": "Rin-Base",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/LeooxzyDekuu/HanakoBotz/issues"
@@ -34,7 +34,7 @@
     "awesome-phonenumber": "^2.64.0",
     "axios": "^1.7.9",
     "axios-cookiejar-support": "^5.0.5",
-    "baileys": "npm:@fizzxydev/baileys-pro@latest",
+    "baileys": "npm:baileys-pro",
     "btch-downloader": "^2.8.4",
     "btch-gemini": "^4.0.90-alpha",
     "canvafy": "^7.2.0",
