@@ -28,6 +28,7 @@
     "@ibaraki-douji/pixivts": "^2.4.1",
     "@hapi/boom": "^9.1.3",
     "@vreden/youtube_scraper": "latest",
+    "akiraa-wb": "latest",
     "async-lock": "^1.4.1",
     "awesome-phonenumber": "^2.64.0",
     "axios": "^1.7.9",
