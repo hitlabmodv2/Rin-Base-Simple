@@ -1,6 +1,6 @@
 {
   "name": "Rin-Base",
-  "version": "1.3.9",
+  "version": "1.0.5",
   "description": "- WhatsApp bot using Library Baileys",
   "main": "index.js",
   "type": "commonjs",
