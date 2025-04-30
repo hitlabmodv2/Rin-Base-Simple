@@ -34,7 +34,7 @@
     "awesome-phonenumber": "^2.64.0",
     "axios": "^1.7.9",
     "axios-cookiejar-support": "^5.0.5",
-    "baileys": "github:kangfarrel/felzar-Baileys",
+    "baileys": "npm:@fizzxydev/baileys-pro@latest",
     "btch-downloader": "^2.8.4",
     "btch-gemini": "^4.0.90-alpha",
     "canvafy": "^7.2.0",
