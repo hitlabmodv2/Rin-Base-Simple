@@ -53,7 +53,7 @@ module.exports = {
       if (!m.quoted) throw "> Reply Plugins yang mau kamu simpan";
       let input = m.text.replace("--add", "").trim();
       try {
-        let file = pg.directory + "/" + input + ".js";
+        let file = pg.directory + "/" + input;
         fs.writeFileSync(file.trim(), `// © HanakoBotz
 // • By: Leooxzy - Deku
 // • Owner: 6283136099660
