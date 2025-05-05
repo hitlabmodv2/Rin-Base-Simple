@@ -32,7 +32,7 @@ module.exports = {
       if (!isNaN(input)) {
         let list = Object.keys(src);
         try {
-          let file = scraper.dir + "/" + list[parseInt(input) - 1] + ".js";
+          let file = scraper.dir + "/" + list[parseInt(input) - 1];
           m.reply(fs.readFileSync(file.trim()).toString());
         } catch (e) {
           m.reply(
@@ -41,7 +41,7 @@ module.exports = {
         }
       } else {
         try {
-          let file = scraper.dir + "/" + input + ".js";
+          let file = scraper.dir + "/" + input;
           m.reply(fs.readFileSync(file.trim()).toString());
         } catch (e) {
           m.reply(
@@ -53,7 +53,7 @@ module.exports = {
       if (!m.quoted) throw "> Reply scrape yang mau kamu simpan";
       let input = m.text.replace("--add", "").trim();
       try {
-        let file = scraper.dir + "/" + input + ".js";
+        let file = scraper.dir + "/" + input;
         fs.writeFileSync(file.trim(), m.quoted.body);
         m.reply("> Berhasil Menyimpan scrape : " + input);
       } catch (e) {
@@ -64,7 +64,7 @@ module.exports = {
       if (!isNaN(input)) {
         let list = Object.keys(src);
         try {
-          let file = scraper.dir + "/" + list[parseInt(input) - 1] + ".js";
+          let file = scraper.dir + "/" + list[parseInt(input) - 1];
           fs.unlinkSync(file.trim());
           m.reply("> Scraper Berhasil dihapus");
         } catch (e) {
@@ -74,7 +74,7 @@ module.exports = {
         }
       } else {
         try {
-          let file = scraper.dir + "/" + input + ".js";
+          let file = scraper.dir + "/" + input;
           fs.unlinkSync(file.trim());
           m.reply("> Scraper Berhasil dihapus");
         } catch (e) {
