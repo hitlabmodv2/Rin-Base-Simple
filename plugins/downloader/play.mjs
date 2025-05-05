@@ -5,7 +5,7 @@
 // By: Leooxzy
 // Bio cr: Krz
 
-const axios = require('axios');
+import axios from 'axios';
 
 let yukio = async (m, {
     conn,
@@ -19,7 +19,7 @@ let yukio = async (m, {
             if (!text) throw '⚠️Masukan Nama Lagu Yg Pengen Anda Cari !'
             const {
                 all
-            } = await require('yt-search')({
+            } = await (await import('yt-search')).default({
                 search: text,
                 hl: 'id',
                 gl: 'ID'
@@ -55,13 +55,13 @@ let yukio = async (m, {
             try {
                 const {
                     result: savetube
-                } = await Scraper.savetube.download(result.url, "720");
+                } = await Scraper.savetube.download(result.url, "mp3");
                 format = 'mp3';
                 ytdl = savetube.download;
             } catch (e) {
                 try {
-                    const ddownr = await Scraper.ddownr.download(result.url, '720');
-                    format = '720';
+                    const ddownr = await Scraper.ddownr.download(result.url, 'mp3');
+                    format = 'mp3';
                     ytdl = ddownr.downloadUrl;
                 } catch (e) {}
             }
@@ -171,4 +171,4 @@ yukio.command = ["play", "spotifyplay", "splay"];
 yukio.loading = true;
 yukio.limit = true;
 
-module.exports = yukio;
+export default yukio;
