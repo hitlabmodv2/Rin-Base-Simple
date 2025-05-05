@@ -16,64 +16,80 @@ const Scandir = async (dir) => {
   );
   return files.reduce((a, f) => a.concat(f), []);
 };
+
 class Scraper {
   #src;
   constructor(dir) {
     this.dir = dir;
     this.#src = {};
   }
+
+  async #loadModule(filename) {
+    const name = path.basename(filename).replace(/\.(js|mjs)$/, '');
+    
+    try {
+      if (filename.endsWith('.mjs')) {
+        // Dynamic import for ESM modules
+        this.#src[name] = (await import(`file://${filename}`)).default
+      } else if (filename.endsWith('.js')) {
+        // Regular require for CommonJS
+        if (require.cache[filename]) delete require.cache[filename];
+        this.#src[name] = require(filename);
+      }
+    } catch (e) {
+      console.log(chalk.red.bold(`- Gagal memuat Scraper ${name}: ${e.message}`));
+      delete this.#src[name];
+    }
+  }
+
   load = async () => {
     let data = await Scandir("./scrapers/src");
-    for (let i of data) {
-      let name = i.split("/").pop().replace(".js", "");
-      try {
-        if (!i.endsWith(".js")) return;
-        this.#src[name] = require(i);
-      } catch (e) {
-        console.log(chalk.red.bold("- Gagal memuat Scraper :" + e));
-        delete this.#src[name];
+    for (let filename of data) {
+      if (filename.endsWith(".js") || filename.endsWith(".mjs")) {
+        await this.#loadModule(filename);
       }
     }
     return this.#src;
   };
+
   watch = async () => {
     const watcher = chokidar.watch(path.resolve(this.dir), {
       persistent: true,
       ignoreInitial: true,
     });
-    watcher.on("add", async (filename) => {
-      if (!filename.endsWith(".js")) return;
-      let name = filename.split("/").pop().replace(".js", "");
-      if (require.cache[filename]) {
-        delete require.cache[filename];
-        this.#src[name] = require(filename);
-        return this.load();
+
+    const handleFileChange = async (filename, event) => {
+      if (!filename.endsWith(".js") && !filename.endsWith(".mjs")) return;
+      
+      const name = path.basename(filename).replace(/\.(js|mjs)$/, '');
+      
+      try {
+        await this.#loadModule(filename);
+        const actionMessages = {
+          add: `- Scraper Baru telah ditambahkan: ${name}`,
+          change: `- Scraper telah diubah: ${name}`,
+          unlink: `- Scraper telah dihapus: ${name}`
+        };
+        if (actionMessages[event]) {
+          console.log(chalk.cyan.bold(actionMessages[event]));
+        }
+      } catch (e) {
+        console.log(chalk.red.bold(`- Gagal memproses ${event} untuk ${name}: ${e.message}`));
       }
-      this.#src[name] = require(filename);
-      console.log(
-        chalk.cyan.bold("- Scraper Baru telah ditambahkan : " + name),
-      );
-      return this.load();
-    });
-    watcher.on("change", (filename) => {
-      if (!filename.endsWith(".js")) return;
-      let name = filename.split("/").pop().replace(".js", "");
-      if (require.cache[filename]) {
-        delete require.cache[filename];
-        this.#src[name] = require(filename);
-        return this.load();
-      }
-      console.log(chalk.cyan.bold("- Scraper telah diubah : " + name));
-      return this.load();
-    });
+    };
+
+    watcher.on("add", (filename) => handleFileChange(filename, 'add'));
+    watcher.on("change", (filename) => handleFileChange(filename, 'change'));
     watcher.on("unlink", (filename) => {
-      if (!filename.endsWith(".js")) return;
-      let name = filename.split("/").pop().replace(".js", "");
+      if (!filename.endsWith(".js") && !filename.endsWith(".mjs")) return;
+      const name = path.basename(filename).replace(/\.(js|mjs)$/, '');
       delete this.#src[name];
-      console.log(chalk.cyan.bold("- Scraper telah dihapus : " + name));
-      return this.load();
+      console.log(chalk.cyan.bold(`- Scraper telah dihapus: ${name}`));
     });
+
+    return watcher;
   };
+
   list = () => this.#src;
 }
 
