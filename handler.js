@@ -124,10 +124,16 @@ module.exports = async (m, sock, store) => {
         )
           continue;
       }
+      let cmdd;
+      try {
+        cmdd = await plugin.command.includes(m.command.toLowerCase())
+      } catch (e) {
+        cmdd = await plugin.command.test(m.command)
+      };
       
       const cmd = usedPrefix
-        ? plugin.command.includes(m.command.toLowerCase())
-        : "";
+          ? (plugin.command && cmdd)
+          : "";
       if (cmd) {
          if (plugin.loading) {
             m.react("🕐");
