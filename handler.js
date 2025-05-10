@@ -46,15 +46,19 @@ module.exports = async (m, sock, store) => {
     store.groupMetadata = await sock.groupFetchAllParticipating();
   }
 
+  const reactram = ['🪩', '🫩', '😂', '🔥', '💙', '🌷', '🌃', '🔮'];
+  const reactt = reactram[Math.floor(Math.random() * reactram.length)];
   const participant = (m.isGroup ? m.metadata.participants : []) || [];
   const isPrems = db.list().user[m.sender].premium.status;
   const isBanned = db.list().user[m.sender].banned.status;
   const isAdmin = m.isAdmin;
   const botAdmin = m.isBotAdmin;
   const Scraper = await scraper.list();
-  const usedPrefix = config.prefix.includes(m.prefix);
+  const isPrefix = config.prefix.includes(m.prefix);
+  const usedPrefix = m.prefix
+  const command = m.command
   const text = m.text;
-  const isCmd = m.prefix && usedPrefix;
+  const isCmd = m.prefix && isPrefix;
    if (!m.isGroup && db.list().settings.onlygrub && !m.isOwner) {
       if (isCmd) return m.reply({ text: `Sorry Bre Ini Only Gc Link Gc:\n\n${config.wagc.map((a, i) => `${i + 1 + ','} ${a}`).join(`\n`)}` })
    }
@@ -66,7 +70,7 @@ module.exports = async (m, sock, store) => {
   if (isCmd) {
       db.list().user[m.sender].rpg.exp += Math.floor(Math.random() * 20) + 1;
   }
-
+  
   for (let name in pg.plugins) {
     let plugin;
     if (typeof pg.plugins[name].code === "function") {
@@ -91,6 +95,8 @@ module.exports = async (m, sock, store) => {
             ctx,
             conn,
             DekuGanz,
+            usedPrefix,
+            command,
             Func,
             config,
             Uploader,
@@ -112,6 +118,8 @@ module.exports = async (m, sock, store) => {
             ctx,
             conn,
             DekuGanz,
+            usedPrefix,
+            command,
             Func,
             config,
             Uploader,
@@ -124,6 +132,7 @@ module.exports = async (m, sock, store) => {
         )
           continue;
       }
+      
       let cmdd;
       try {
         cmdd = await plugin.command.includes(m.command.toLowerCase())
@@ -131,12 +140,12 @@ module.exports = async (m, sock, store) => {
         cmdd = await plugin.command.test(m.command)
       };
       
-      const cmd = usedPrefix
+      const cmd = isPrefix
           ? (plugin.command && cmdd)
           : "";
       if (cmd) {
          if (plugin.loading) {
-            m.react("🕐");
+            m.react(reactt);
          }
           if (plugin.owner && !m.isOwner) {
             return m.reply(config.messages.owner);
@@ -183,9 +192,11 @@ module.exports = async (m, sock, store) => {
           ctx,
           conn,
           DekuGanz,
+          usedPrefix,
+          command,
           config,
           text,
-          plugins: Object.values(pg.plugins).filter((a) => a.alias),
+          plugins: Object.values(pg.plugins).filter((a) => a.command),
           Func,
           Scraper,
           Uploader,
@@ -196,7 +207,7 @@ module.exports = async (m, sock, store) => {
           isBanned,
         })
           .then(async (a) => {
-             if (plugin?.limit && plugin?.settings?.limit && !isPrems && !m.isOwner) {
+             if (plugin?.limit && plugin?.settings?.limit && !isPrems) {
                 let user = db.list().user[m.sender];
                 if (user.limit > plugin.limit && plugin.settings.limit) {
                    user.limit -= plugin.limit && plugin.settings.limit;
