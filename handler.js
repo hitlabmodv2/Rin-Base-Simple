@@ -73,8 +73,9 @@ module.exports = async (m, sock, store) => {
 
     if (isCmd) {
         db.list().user[m.sender].rpg.exp += Math.floor(Math.random() * 20) + 1;
+        
     }
-
+  /*"
     if (isCmd) {
         const extra = {
             sock,
@@ -100,7 +101,7 @@ module.exports = async (m, sock, store) => {
         const filename = './case/case-mjs.mjs';
         await (await import(`${filename}`)).default(m, extra);
     };
-
+  **/
 
     for (let name in pg.plugins) {
         let plugin;
