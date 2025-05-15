@@ -1,37 +1,35 @@
-# **Rin Base Simple** 
+
 <p align="center">
-  <img title="Rin-Okumura-Simple" src="https://i.pinimg.com/1200x/a3/bd/7b/a3bd7b04fa983dffc8f5341e8b2a3911.jpg">
+  <img src="https://files.catbox.moe/hubkvg.jpg" width="250"/>
 </p>
 
-|                                          Creator                                                |
-| :---------------------------------------------------------------------------------------------: |
-| [![LeooxzyDekuu](https://github.com/LeooxzyDekuu.png?size=500)](https://github.com/LeooxzyDekuu)|
-| [LeooxzyDekuu](https://github.com/LeooxzyDekuu)                                                 |
+<h1 align="center">Rin Okumura - WhatsApp Bot</h1>
 
-## Informasi
-
-## Belum Bisa Regex Sih Bg🗿
-
-**Simple WhatsApp bot Using Library Baileys**
-| Fitur             | run/start | files | 
-| :--------         | :-------: | :---: | 
-| Plugin            | ❌        | ✅    |
-| Case              | ❌        | ✅    |
-| Scraper           | ❌        | ✅    |
-| Auto ClearSesi    | ❌        | ❌    |
-| Main              | ✅        | ✅    |
-| Panel             | ✅        | ❌    |
-| Termux            | ✅        | ✅    |
-
-| emoji   | meaning                 |
-| :-----: | :---------------------- |
-| ✅      | Fitur tersedia          |
-| ➖      | unreasonable/impossible |
-| ❌      | Fitur belum/tidak ada   |
 
 ---
 
-## ⚙️ Settings Bot ***( settings.js )***
+## 👤 Owner
+
+> GitHub: [LeooxzyDekuu](https://github.com/LeooxzyDekuu.png)  
+> Project: **Rin Okumura WhatsApp Bot**
+
+---
+
+> A powerful modular WhatsApp bot using JavaScript, built with a plugin system for maximum flexibility. Inspired by **Rin Okumura** from *Blue Exorcist*, this bot brings both fire and discipline to your chats!
+
+---
+
+## 📌 Features
+
+- Plugin-based architecture
+- Written in JavaScript
+- CommonJS & ESModule compatible
+- Easy command creation
+- Inspired by anime character Rin Okumura
+
+---
+
+## ⚙️ Config.js
 
 ```javascript
 const config = {
@@ -77,9 +75,7 @@ const config = {
 module.exports = config
 ```
 
-## 👨‍💻 How to install/run
-
-
+## ⚙️ Installation
 ```bash
 $ git clone https://github.com/FrankXz12/HanakoBotz
 $ cd HanakoBotz
@@ -87,64 +83,110 @@ $ npm install
 $ npm start
 ```
 
-## ☘️ Example Features
-Berikut cara menambahkan fitur pada bot ini
+## 🌐 Commonjs Module Example File .js
 
-### 1. Plugins
-
-```javascript
-
-module.exports = {
-    help: ["tes", "tesbot", "testing"].map(v => v + ' *[ Testing Bot ]* '), //Mengetahui Nama Command Di Menu
-    tags: ["main"], //- Category Tags
-    command: ["tes", "tesbot", "testing"], //- Nama Fitur
-    owner: false, //-  Apakah Fitur ini khusus owner ?
-    group: false, // - Apakah Fitur ini khusus group ?
-    description: "Tes bot saja", //- Penjelasan tentang fitur nya
-    loading: true, //- Ingin menambahkan loading messages ?
-    code: async (m, {
-      sock,
-      client,
-      conn,
-      DekuGanz,
-      Func,
-      Scraper,
-      text,
-      config
-    }) => {
-      m.reply("> Bot Online ✓")
-  }
-}
-
-```
-
-### 2. Plugins
+## 🧠 Example Plugin (No Regex)
 
 ```javascript
-let yukio = async (m, {
-  sock,
-  client,
-  conn,
-  DekuGanz,
-  Func,
-  Scraper,
-  text,
-  config
- }) => {
-  m.reply("> Bot Online ✓")
-}
+let handler = async (m, { conn, ctx, client, sock, text, Func, config, Scraper }) => {
+  // code
+};
 
-yukio.help: ["tes", "tesbot", "testing"].map(v => v + ' *[ Testing Bot ]* '); //Mengetahui Nama Command Di Menu
-yukio.tags: ["main"], //- Category Tags
-yukio.command: ["tes", "tesbot", "testing"]; //- Nama Fitur
-yukio.owner: false; //-  Apakah Fitur ini khusus owner ?
-yukio.group: false; // - Apakah Fitur ini khusus group ?
-yukio.loading: true; //- Ingin menambahkan loading messages ?
+handler.command = ['expired', 'exp'];
+handler.help = ['expired', 'exp'];
+handler.tags = ['run'];
+handler.limit = false;
+handler.loading = false;
+handler.owner = false;
+handler.group = false;
+handler.admin = false;
+handler.botAdmin = false;
 
-module.exports = yukio;
+module.exports = handler;
 ```
 
-## **All Contributors**  
+---
+
+## ⚡ Example Plugin (With Regex)
+
+```javascript
+let handler = async (m, { conn, ctx, client, sock, text, Func, config, Scraper }) => {
+  // code
+};
+
+handler.command = /^(expired|exp)$/i;
+handler.help = ['expired', 'exp'];
+handler.tags = ['run'];
+handler.limit = false;
+handler.loading = false;
+handler.owner = false;
+handler.group = false;
+handler.admin = false;
+handler.botAdmin = false;
+
+module.exports = handler;
+```
+
+---
+
+## 🌐 ECMAScript Module Example File .mjs
+
+## 🧠 Example Plugin (No Regex)
+
+```javascript
+let handler = async (m, { conn, ctx, client, sock, text, Func, config, Scraper }) => {
+  // code
+};
+
+handler.command = ['expired', 'exp'];
+handler.help = ['expired', 'exp'];
+handler.tags = ['run'];
+handler.limit = false;
+handler.loading = false;
+handler.owner = false;
+handler.group = false;
+handler.admin = false;
+handler.botAdmin = false;
+
+export default handler;
+```
+
+---
+
+## ⚡ Example Plugin (With Regex)
+
+```javascript
+let handler = async (m, { conn, ctx, client, sock, text, Func, config, Scraper }) => {
+  // code
+};
+
+handler.command = /^(expired|exp)$/i;
+handler.help = ['expired', 'exp'];
+handler.tags = ['run'];
+handler.limit = false;
+handler.loading = false;
+handler.owner = false;
+handler.group = false;
+handler.admin = false;
+handler.botAdmin = false;
+
+export default handler;
+```
+
+---
+
+## 💡 Menu Command
+
+```
+.menu       - Show main menu
+.menu all   - Show all commands
+.menu tags  - Show commands by tags
+```
+
+---
+
+
+## 👥 All Contributors
 [![LeooxzyDekuu](https://github.com/LeooxzyDekuu.png?size=100)](https://github.com/LeooxzyDekuu) | [![AxellNetwork](https://github.com/AxellNetwork.png?size=100)](https://github.com/AxellNetwork) | [![AndhikaGG](https://github.com/AndhikaGG.png?size=100)](https://github.com/AndhikaGG)  
 ---|---|---  
 [LeooxzyDekuu](https://github.com/LeooxzyDekuu) | [AxellNetwork](https://github.com/AxellNetwork) | [AndhikaGG](https://github.com/AndhikaGG)  
@@ -152,10 +194,4 @@ Remake Base | Base Script | Penyumbang fitur
 
 ---
 
-## 📢 Jgn Lupa Follow Channel dan Join Group ya
-
-<p>Base Sc: <a href="https://whatsapp.com/channel/0029Vb0YWvYJ3jusF2nk9U1P">Klik disini</a></p>
-
-<p>Ch-1 (utama): <a href="https://whatsapp.com/channel/0029VadFS3r89inc7Jjus03W">Klik disini</a></p>
-
-<p>Ch-2: <a href="https://whatsapp.com/channel/0029VateyJuKWEKhJMRKEL20">Klik disini</a></p>
+> *"The flames of the exorcist will guide your command. Don't fear the demon, become the master."*
