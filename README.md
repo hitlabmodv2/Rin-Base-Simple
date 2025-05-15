@@ -15,17 +15,17 @@
 
 ---
 
-> A powerful modular WhatsApp bot using JavaScript, built with a plugin system for maximum flexibility. Inspired by **Rin Okumura** from *Blue Exorcist*, this bot brings both fire and discipline to your chats!
+> Bot WhatsApp modular yang kuat menggunakan JavaScript, dibuat dengan sistem plugin untuk fleksibilitas maksimal. Terinspirasi oleh **Rin Okumura** dari *Blue Exorcist*, bot ini menghadirkan semangat dan disiplin dalam obrolan Anda!
 
 ---
 
 ## 📌 Features
 
-- Plugin-based architecture
-- Written in JavaScript
-- CommonJS & ESModule compatible
-- Easy command creation
-- Inspired by anime character Rin Okumura
+- Arsitektur berbasis plugin
+- Ditulis dalam JavaScript
+- Kompatibel dengan CommonJS & ESModule
+- Pembuatan perintah yang mudah
+- Terinspirasi oleh karakter anime Rin Okumura
 
 ---
 
@@ -76,7 +76,7 @@ const config = {
 module.exports = config
 ```
 
-## ⚙️ Installation
+## ⚙️ Install
 ```bash
 $ git clone https://github.com/FrankXz12/HanakoBotz
 $ cd HanakoBotz
@@ -215,4 +215,4 @@ Remake Base | Base Script | Penyumbang fitur
 
 ---
 
-> *"The flames of the exorcist will guide your command. Don't fear the demon, become the master."*
+> *"Api pengusir setan akan menuntun perintahmu. Jangan takut pada iblis, jadilah tuan."*
