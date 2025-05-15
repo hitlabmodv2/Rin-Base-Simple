@@ -42,7 +42,7 @@ const config = {
       thumbnailUrl: 'https://i.pinimg.com/1200x/a0/91/28/a09128ba3e6cb7b34f6df2f2c9938410.jpg'
       //thumbnail: fs.readFileSync('./image/tambahkan-ft-trus-kasih-nama')
     },
-    isQr = true,
+    isQr = false,
     prefix: [".", "?", "!", "/", "#"], //Tambahin sendiri prefix nya kalo kurang
     wagc: [ "https://chat.whatsapp.com/JyeT1hdCPJeLy95tzx5eyI", "https://chat.whatsapp.com/DfffgArbTUu46nqCgmCbE0" ],
     saluran: '120363279195205552@newsletter', 
