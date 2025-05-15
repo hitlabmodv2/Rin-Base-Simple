@@ -1,9 +1,6 @@
-// © HanakoBotz
-// • By: Leooxzy - Deku
-// • Owner: 6283136099660
-
-// By: Leooxzy
-// Bio cr: Krz
+// 🔥® Rin-Okumura™ 🔥
+// 👿 Creator: Dxyz
+// ⚡ Plugin: menu.js
 
 let rin = {
     help: [],
