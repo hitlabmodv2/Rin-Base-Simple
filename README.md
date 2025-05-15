@@ -184,7 +184,7 @@ export default handler;
 .plugin --delete file/file.js / .plugin --delete file/file.mjs - Buat Delete Fitur
 ```
 
-```Plugin
+```Scrape
 .skrep - buat liat list skrep
 .skrep --add file/file.js / .skrep --add file/file.mjs - Buat Add Skrep
 .skrep --get file/file.js / .skrep --get file/file.mjs - Buat Get Skrep
