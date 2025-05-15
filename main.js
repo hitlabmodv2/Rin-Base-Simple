@@ -164,7 +164,7 @@
     global.hanako = sock;
     store.bind(sock.ev);
     
-    if (!sock.authState.creds.registered) {
+    if (config.isQr === false && !sock.authState.creds.registered) {
       console.log(chalk.bold.green('[ Warning ] ') + chalk.white('>>> ') + chalk.green(`Masukan Nomor Kalian Di Sini\nMinsalnya 62 Terus Contohnya: 628xxx`));
       const phoneNumber = await question(chalk.bold.green('[ Nomor Anda ] ') + chalk.white('>>> ') );
       const code = await sock.requestPairingCode(phoneNumber, "LEOODEKU");
