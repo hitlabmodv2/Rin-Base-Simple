@@ -1,7 +1,10 @@
-/*
- 📙Main Js Dari: Index MchaX
- 👨‍💻Remake: Deku
-*/
+/**
+ *  ═══🗡️≪ DEMON CORE ≫🗡️═══
+ *  @ File: [main.js]
+ *  @ Creator: [Dxyz - Putra]
+ *  @ Name Bot: [Rin-Okumura]
+ *  ═══🔥≪ 業火 ≫🔥═══
+**/
 
 (async () => {
   const {
@@ -141,7 +144,7 @@
     const sock = simple(
       {
         logger: pino({ level: "silent" }),
-        printQRInTerminal: false,
+        printQRInTerminal: true,
         auth: state,
         cachedGroupMetadata: async (jid) => groupCache.get(jid),
         version: [2, 3000, 1019441105],
@@ -160,6 +163,8 @@
     );
     global.hanako = sock;
     store.bind(sock.ev);
+    
+    /*
     if (!sock.authState.creds.registered) {
       console.log(chalk.bold.green('[ Warning ] ') + chalk.white('>>> ') + chalk.green(`Masukan Nomor Kalian Di Sini\nMinsalnya 62 Terus Contohnya: 628xxx`));
       const phoneNumber = await question(chalk.bold.green('[ Nomor Anda ] ') + chalk.white('>>> ') );
@@ -168,6 +173,7 @@
         console.log(chalk.bold.green('[ Code ] ') + chalk.white('>>> ') + chalk.green(`Nih Code Pairing Mu Tuan: ${chalk.bold.green(code)}`));
       }, 3000);
     }
+    */
 
     //=====[ Pembaruan Koneksi ]======
         sock.ev.on("connection.update", async (update) => {
