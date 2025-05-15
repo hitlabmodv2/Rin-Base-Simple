@@ -175,6 +175,26 @@ export default handler;
 
 ---
 
+## 💡 Command Fitur Plugin/Scrape
+
+```Plugin
+.plugin - buat liat list plugins
+.plugin --add file/file.js / .plugin --add file/file.mjs - Buat Add Fitur
+.plugin --get file/file.js / .plugin --get file/file.mjs - Buat Get Fitur
+.plugin --delete file/file.js / .plugin --delete file/file.mjs - Buat Delete Fitur
+```
+
+```Plugin
+.skrep - buat liat list skrep
+.skrep --add file/file.js / .skrep --add file/file.mjs - Buat Add Skrep
+.skrep --get file/file.js / .skrep --get file/file.mjs - Buat Get Skrep
+.skrep --delete file/file.js / .skrep --delete file/file.mjs - Buat Delete Skrep
+```
+
+---
+
+---
+
 ## 💡 Menu Command
 
 ```
