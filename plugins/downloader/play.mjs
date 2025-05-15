@@ -1,9 +1,6 @@
-// © HanakoBotz
-// • By: Leooxzy - Deku
-// • Owner: 6283136099660
-
-// By: Leooxzy
-// Bio cr: Krz
+// 🔥® Rin-Okumura™ 🔥
+// 👿 Creator: Dxyz
+// ⚡ Plugin: downloader/play.mjs
 
 import axios from 'axios';
 
@@ -26,12 +23,19 @@ let yukio = async (m, {
             });
             if (!all && all.length > 0) throw '⚠️Maaf Lagu Yang Anda Search Tidak Di Temukan !'
             const result = all[0];
-            let caption = `🔍 Search Play
-> • *Title:* ${result.title || ''}
-> • *Id:* ${result.videoId || ''}
-> • *Ago:* ${result.ago || ''}
-> • *Author:* ${result.author.name || ''}
-> • *Url:* ${result.url || ''}`;
+            let caption = `\`🔥━━━━━━━━━━━━━━━━━━🔥
+   👹 *RIN'S PLAYER* 👹
+🔥━━━━━━━━━━━━━━━━━━🔥
+
+🗡️ *Title:* ${result.title || ''}
+💢 *Video ID:* ${result.videoId || ''}
+👿 *Author:* ${result.author.name || ''}
+🔪 *URL:* ${result.url || ''}
+⚔️ *Type:* Audio
+
+🔥━━━━━━━━━━━━━━━━━━🔥
+"Let's rock, human!" - Rin
+🔥━━━━━━━━━━━━━━━━━━🔥\``;
             conn.sendMessage(m.chat, {
                 text: caption,
                 contextInfo: {
@@ -69,8 +73,7 @@ let yukio = async (m, {
                 responseType: 'arraybuffer'
             });
             const array = Buffer.from(buff.data)
-            const url = await Uploader.tmpfiles(array);
-            const size = await Func.getSize(url);
+            const size = await Func.formatSize(array.length);
             conn.sendMessage(m.chat, {
                 audio: Buffer.from(array),
                 mimetype: 'audio/mpeg',
