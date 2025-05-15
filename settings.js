@@ -17,6 +17,7 @@ const config = {
       thumbnailUrl: geturl
       //thumbnail: fs.readFileSync('./image/tambahkan-ft-trus-kasih-nama')
     },
+    isQr: true,
     prefix: [".", "?", "!", "/", "#"], //Tambahin sendiri prefix nya kalo kurang
     wagc: [ "https://chat.whatsapp.com/JyeT1hdCPJeLy95tzx5eyI", "https://chat.whatsapp.com/DfffgArbTUu46nqCgmCbE0" ],
     saluran: '120363279195205552@newsletter', 
