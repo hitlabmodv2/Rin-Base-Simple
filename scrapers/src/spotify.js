@@ -73,22 +73,29 @@ class Spotify {
     };
 
     download = async function spotifydl(url) {
-  try {
-      const download = await axios.post(`https://spotydown.media/api/download-track`, { url: url }).then(a => a.data)
+        try {
+            const download = await axios.post(`https://spotydown.media/api/download-track`, {
+                url: url
+            }).then(a => a.data)
 
-       const metadata = await axios.post(`https://spotydown.media/api/get-metadata`, { url: url }).then(a => a.data.apiResponse.data[0])
+            const metadata = await axios.post(`https://spotydown.media/api/get-metadata`, {
+                url: url
+            }).then(a => a.data.apiResponse.data[0])
 
-       const data = {
-         metadata,
-         download 
-       }
-  
-      return data
-   } catch (e) {
-     return { metadata: e, download: e }
-   console.log(e)
-   }
-}
+            const data = {
+                metadata,
+                download
+            }
+
+            return data
+        } catch (e) {
+            return {
+                metadata: e,
+                download: e
+            }
+            console.log(e)
+        }
+    }
 }
 
 module.exports = new Spotify();
