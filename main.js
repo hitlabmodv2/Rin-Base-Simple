@@ -135,7 +135,7 @@
 ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟  ⢀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
 ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡏ ⢀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
 `))
-    console.log(chalk.bold.green('[ Script ] ') + chalk.white('>>> ') + chalk.green(`Hanako-Botz Creator: Dxyz - Deku`));
+    console.log(chalk.bold.green('[ Script ] ') + chalk.white('>>> ') + chalk.green(`${config.name} Creator: Dxyz - Deku`));
     const { cpus } = require('os')
     console.log(chalk.bold.cyan('[ Cpus ] ') + chalk.white('>>> ') + chalk.bold.yellow(`\nOs: ${cpus()[0].model || ''}\nSpeed: ${cpus()[0].speed || ''}`) + chalk.bold.red(`\n${Object.entries(cpus()[0].times).map(([a, b]) => `${a}: ${b}`).join("\n")}`));
 
@@ -144,7 +144,7 @@
     const sock = simple(
       {
         logger: pino({ level: "silent" }),
-        printQRInTerminal: true,
+        printQRInTerminal: config.isQr,
         auth: state,
         cachedGroupMetadata: async (jid) => groupCache.get(jid),
         version: [2, 3000, 1019441105],
@@ -164,7 +164,6 @@
     global.hanako = sock;
     store.bind(sock.ev);
     
-    /*
     if (!sock.authState.creds.registered) {
       console.log(chalk.bold.green('[ Warning ] ') + chalk.white('>>> ') + chalk.green(`Masukan Nomor Kalian Di Sini\nMinsalnya 62 Terus Contohnya: 628xxx`));
       const phoneNumber = await question(chalk.bold.green('[ Nomor Anda ] ') + chalk.white('>>> ') );
@@ -173,7 +172,6 @@
         console.log(chalk.bold.green('[ Code ] ') + chalk.white('>>> ') + chalk.green(`Nih Code Pairing Mu Tuan: ${chalk.bold.green(code)}`));
       }, 3000);
     }
-    */
 
     //=====[ Pembaruan Koneksi ]======
         sock.ev.on("connection.update", async (update) => {
