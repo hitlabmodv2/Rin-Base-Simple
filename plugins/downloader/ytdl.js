@@ -1,9 +1,6 @@
-// © HanakoBotz
-// • By: Leooxzy - Deku
-// • Owner: 6283136099660
-
-// By: Leooxzy
-// Bio cr: Krz
+// 🔥® Rin-Okumura™ 🔥
+// 👿 Creator: Dxyz
+// ⚡ Plugin: downloader/ytdl.js
 
 let axios = require('axios');
 
@@ -18,20 +15,18 @@ let yukio = async (m, {
         case 'ytmp4':
         case 'ytv': {
             if (!text.includes('youtu')) throw '⚠️Masukan Masukan Link Yt !'
-            const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))([^\?&]+)(?:\?is=[^&]*)?(?:\?si=[^&]*)?(?:&.*)?/;
-            const videoId = text.match(regex);
-            const result = await require('yt-search')({
-                videoId: videoId[1],
-                hl: 'id',
-                gl: 'ID'
-            });
-            if (!result) throw '⚠️Maaf Link Lagu Tidak Dapat Di Download'
+            const [link, resolusi] = text.split(' ');
+            const quality = resolusi || '720';
+            const result = await Scraper.googleYoutube(link || text);
+            if (!result) throw '⚠️Maaf Link Video Tidak Dapat Di Download'
             let caption = `📁 Download YouTube
 > • *Title:* ${result.title || ''}
 > • *Id:* ${result.videoId || ''}
-> • *Ago:* ${result.ago || ''}
-> • *Author:* ${result.author.name || ''}
-> • *Url:* ${result.url || ''}`;
+> • *Ago:* ${result.metadata.ago || ''}
+> • *Author:* ${result.author.channelTitle || ''}
+> • *Url:* ${result.url || ''}
+
+👁️${result.metadata.view || ''} | 💙${result.metadata.like || ''} | 💬${result.metadata.comment || ''}`;
             conn.sendMessage(m.chat, {
                 text: caption,
                 contextInfo: {
@@ -39,7 +34,7 @@ let yukio = async (m, {
                     forwardingScore: 99999,
                     externalAdReply: {
                         title: result.title,
-                        body: result.timestamp + ' / ' + result.author.name + ' / ' + result.type,
+                        body: result.metadata.duration + ' / ' + result.author.channelTitle,
                         mediaType: 1,
                         thumbnailUrl: result.thumbnail,
                         renderLargerThumbnail: true,
@@ -51,25 +46,25 @@ let yukio = async (m, {
             });
             let ytdl;
             let format;
+            try {
+                const {
+                    result: savetube
+                } = await Scraper.savetube.download(text, quality);
+                format = quality;
+                ytdl = savetube.download;
+            } catch (e) {
                 try {
-                    const {
-                        result: savetube
-                    } = await Scraper.savetube.download(text, "720");
-                    format = 'mp3';
-                    ytdl = savetube.download;
-                } catch (e) {
-                    try {
-                        const ddownr = await Scraper.ddownr.download(text, '720');
-                        format = '720';
-                        ytdl = ddownr.downloadUrl;
-                    } catch (e) {}
-                }
+                    const ddownr = await Scraper.ddownr.download(text, quality);
+                    format = quality;
+                    ytdl = ddownr.downloadUrl;
+                } catch (e) {}
+            }
             const buff = await axios.get(ytdl, {
                 responseType: 'arraybuffer'
             });
             const array = Buffer.from(buff.data)
-            const url = await Uploader.tmpfiles(array);
-            const size = await Func.getSize(url);
+            const tourl = await Uploader.tmpfiles(array);
+            const size = await Func.getSize(tourl);
             if (size > 100 * 1024 * 1024) {
                 await sock.sendMessage(m.chat, {
                     document: Buffer.from(buff.data),
@@ -91,20 +86,16 @@ let yukio = async (m, {
         case 'ytmp3':
         case 'yta': {
             if (!text.includes('youtu')) throw '⚠️Masukan Masukan Link Yt !';
-            const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))([^\?&]+)(?:\?is=[^&]*)?(?:\?si=[^&]*)?(?:&.*)?/;
-            const videoId = text.match(regex);
-            const result = await require('yt-search')({
-                videoId: videoId[1],
-                hl: 'id',
-                gl: 'ID'
-            });
+            const result = await Scraper.googleYoutube(text);
             if (!result) throw '⚠️Maaf Link Video Tidak Dapat Di Download'
             let caption = `📁 Download YouTube
 > • *Title:* ${result.title || ''}
 > • *Id:* ${result.videoId || ''}
-> • *Ago:* ${result.ago || ''}
-> • *Author:* ${result.author.name || ''}
-> • *Url:* ${result.url || ''}`;
+> • *Ago:* ${result.metadata.ago || ''}
+> • *Author:* ${result.author.channelTitle || ''}
+> • *Url:* ${result.url || ''}
+
+👁️${result.metadata.view || ''} | 💙${result.metadata.like || ''} | 💬${result.metadata.comment || ''}`;
             conn.sendMessage(m.chat, {
                 text: caption,
                 contextInfo: {
@@ -112,7 +103,7 @@ let yukio = async (m, {
                     forwardingScore: 99999,
                     externalAdReply: {
                         title: result.title,
-                        body: result.timestamp + ' / ' + result.author.name + ' / ' + result.type,
+                        body: result.metadata.duration + ' / ' + result.author.channelTitle,
                         mediaType: 1,
                         thumbnailUrl: result.thumbnail,
                         renderLargerThumbnail: true,
@@ -125,19 +116,19 @@ let yukio = async (m, {
             let ytdl;
             let format;
 
+            try {
+                const {
+                    result: savetube
+                } = await Scraper.savetube.download(text, "mp3");
+                format = 'mp3';
+                ytdl = savetube.download;
+            } catch (e) {
                 try {
-                    const {
-                        result: savetube
-                    } = await Scraper.savetube.download(text, "mp3");
+                    const ddownr = await Scraper.ddownr.download(finalUrl, 'mp3');
                     format = 'mp3';
-                    ytdl = savetube.download;
-                } catch (e) {
-                    try {
-                        const ddownr = await Scraper.ddownr.download(finalUrl, 'mp3');
-                        format = 'mp3';
-                        ytdl = ddownr.downloadUrl;
-                    } catch (e) {}
-                }
+                    ytdl = ddownr.downloadUrl;
+                } catch (e) {}
+            }
 
             const buff = await axios.get(ytdl, {
                 responseType: 'arraybuffer'
@@ -179,7 +170,7 @@ let yukio = async (m, {
 
 yukio.help = ["ytmp3", "ytmp4", "yta", "ytv"].map(v => v + ' *[ Request Lagu Yt Yg Pengen Di Putar ]* ');
 yukio.tags = ["downloader"];
-yukio.command = ["ytmp3", "ytmp4", "yta", "ytv"];
+yukio.command = /^(ytmp3|ytmp4|yta|ytv)$/i;
 yukio.loading = true;
 yukio.limit = true;
 
