@@ -3,6 +3,7 @@
 // ⚡ Plugin: downloader/play.mjs
 
 import axios from 'axios';
+import fs from 'fs';
 
 let yukio = async (m, {
     conn,
@@ -96,73 +97,39 @@ let yukio = async (m, {
         break;
         case 'spotifyplay':
         case 'splay': {
-            let api = 'https://spotifyapi.caliphdev.com'
-            if (!text) throw '⚠️Masukan Nama Lagu Yg Pengen Anda Cari !'
-            const {
-                data: search
-            } = await axios(api + '/api/search/tracks', {
-                post: 'GET',
-                params: {
-                    q: text
-                }
-            });
+            let outputPath = `./tmp/spotify-${Date.now()}.mp3`
+            
+            const search = await Scraper.spotify.search(text);
             if (!search && !search.length > 0) throw '⚠️ Maaf Lagu Yg Anda Search Tidak Di Temukan';
-            const {
-                data: detail
-            } = await axios(api + '/api/info/track', {
-                post: 'GET',
-                params: {
-                    url: search[0].url
-                }
-            });
+            const { metadata: detail } = await Scraper.spotify.download(search[0].url);
 
-            let linkurl;
-            try {
-                const {
-                    result: spdl
-                } = await Scraper.spotiDown(detail.url)
-                linkurl = spdl.download
-            } catch (e) {
-                try {
-                    linkurl = `${api + '/api/download/track?url=' + detail.url}`
-                } catch (e) {}
-            }
-            const caption = `📁 Spotify Downloader
-> • *Title:* ${detail.title || ''}
-> • *Artist:* ${detail.artist || ''}
-> • *Album:* ${detail.album || ''}
-> • *Url:* ${detail.url || ''}
-> • *Link-Download:* ${linkurl || ''}`;
-            m.reply(caption);
-            let audio;
-            try {
-                const {
-                    result: spdl
-                } = await Scraper.spotiDown(detail.url)
-                audio = {
-                    url: spdl.download
-                }
-            } catch (e) {
-                try {
-                    const {
-                        data
-                    } = await axios(api + '/api/download/track', {
-                        post: 'GET',
-                        params: {
-                            url: detail.url
-                        },
-                        responseType: 'arraybuffer'
-                    });
-                    audio = await Buffer.from(data)
-                } catch (e) {}
-            }
+            const caption = `╭───────────────────────────────╮
+│  🔥 RIN'S SPOTIFY DOWNLOADER  │
+├───────────────────────────────┤
+│ 🎵 ${detail.name || ''}               │
+│ 🎤 ${detail.artist || ''}          │
+│ 💿 ${detail.album_name || ''} │
+│ 🔗 ${detail.url || ''} │
+├───────────────────────────────┤
+│ 🗡️ (•̀ᴗ•́)و ︻デ═一            │
+│ 📥 Downloading...              │
+│ 💽 Format: MP3               │
+╰───────────────────────────────╯
+"Not bad... for human music." - Rin Okumura`;
+            ctx.reply(m.chat, caption, m);
+            const { download: spdl } = await Scraper.spotify.download(detail.url);
+            const media = await axios.get(spdl.file_url, { responseType: 'arraybuffer' });
+            await fs.writeFileSync(outputPath, media.data);
+            let audio = await fs.readFileSync(outputPath);
 
             conn.sendMessage(m.chat, {
-                audio,
-                mimetype: 'audio/mpeg'
+               audio: Buffer.from(audio),
+               mimetype: 'audio/mpeg'
             }, {
                 quoted: m
             });
+            await conn.delay(200);
+            await fs.unlinkSync(outputPath);
         }
         break;
     };
