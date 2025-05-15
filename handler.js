@@ -1,21 +1,24 @@
 /**
- * ======================================
- * @Script_Based: Neko/Hanako
- * @Remake_Bagian: Help, Tags Command
- * @Type: cjs
- * @Ch: https://whatsapp.com/channel/0029VadFS3r89inc7Jjus03W
- * @Note: no apus wm ini credit dxyz
- * ======================================
- **/
+ *  ═══🗡️≪ DEMON CORE ≫🗡️═══
+ *  @ Filr: [handler.js]
+ *  @ Creator: [Dxyz - Putra]
+ *  @ Name Bot: [Rin-Okumura]
+ *  ═══🔥≪ 業火 ≫🔥═══
+**/
 
 const config = require("./settings.js");
 const Func = require("./lib/function.js");
 const serialize = require("./lib/serialize.js");
 const Uploader = require("./lib/uploader.js");
-const { jidNormalizedUser, WAMessageStubType } = require("baileys");
+const {
+    jidNormalizedUser,
+    WAMessageStubType
+} = require("baileys");
 const moment = require("moment-timezone");
 const cron = require("node-cron");
-const { exec } = require("child_process");
+const {
+    exec
+} = require("child_process");
 const chalk = require("chalk");
 
 module.exports = async (m, sock, store) => {
@@ -65,7 +68,7 @@ module.exports = async (m, sock, store) => {
     }
 
     if (m.isOwner) {
-       db.list().user[m.sender].limit = 100
+        db.list().user[m.sender].limit = 100
     }
     if (isPrems) {
         db.list().user[m.sender].limit = 99999;
@@ -73,35 +76,35 @@ module.exports = async (m, sock, store) => {
 
     if (isCmd) {
         db.list().user[m.sender].rpg.exp += Math.floor(Math.random() * 20) + 1;
-        
+
     }
-  /*"
-    if (isCmd) {
-        const extra = {
-            sock,
-            client,
-            ctx,
-            conn,
-            DekuGanz,
-            usedPrefix,
-            quoted,
-            command,
-            config,
-            text,
-            Func,
-            Scraper,
-            Uploader,
-            store,
-            isAdmin,
-            botAdmin,
-            isPrems,
-            isBanned,
-        };
-        await require('./case/case-cjs.js')(m, extra);
-        const filename = './case/case-mjs.mjs';
-        await (await import(`${filename}`)).default(m, extra);
-    };
-  **/
+    /*"
+      if (isCmd) {
+          const extra = {
+              sock,
+              client,
+              ctx,
+              conn,
+              DekuGanz,
+              usedPrefix,
+              quoted,
+              command,
+              config,
+              text,
+              Func,
+              Scraper,
+              Uploader,
+              store,
+              isAdmin,
+              botAdmin,
+              isPrems,
+              isBanned,
+          };
+          await require('./case/case-cjs.js')(m, extra);
+          const filename = './case/case-mjs.mjs';
+          await (await import(`${filename}`)).default(m, extra);
+      };
+    **/
 
     for (let name in pg.plugins) {
         let plugin;
@@ -199,7 +202,7 @@ module.exports = async (m, sock, store) => {
                 if (plugin.botAdmin && !botAdmin) {
                     return m.reply(config.messages.botAdmin);
                 }
-                
+
                 await plugin(m, {
                         sock,
                         client,
@@ -227,20 +230,33 @@ module.exports = async (m, sock, store) => {
                                 user.limit -= plugin.limit;
                                 ctx.reply(
                                     m.chat,
-                                    `> 💡 *Informasi:* Kamu telah menggunakan fitur limit\n> *- Limit kamu saat ini:* ${user.limit} tersisa ☘️\n> *- Catatan:* Limit akan direset pada pukul 02:00 WIB setiap harinya.`,
+                                    `⚡━━━━━━━━━━━━━━━━━━━⚡
+  👹 *LIMIT DEMONIC* 👹
+⚡━━━━━━━━━━━━━━━━━━━⚡
+
+🗡️ Limit kamu: ${user.limit} tersisa 
+⏳ Reset: 02:00 WIB
+"Jangan habiskan kekuatan iblismu!" - Rin
+⚡━━━━━━━━━━━━━━━━━━━⚡`,
                                     m
                                 );
                                 if (user.limit === plugin.limit) {
                                     ctx.reply(
                                         m.chat,
-                                        `⚠️ *Peringatan:* Limit kamu sudah habis! ❌\nSilakan tunggu hingga reset pukul 02:00 WIB atau beli limit tambahan.`,
+                                        `💢━━━━ *FINAL WARNING* ━━━━💢
+👹 *Limit terakhir!* Hanya ${user.limit} tersisa!
+⏱️ Tunggu reset 02:00 WIB
+"Kau menguji kesabaranku!" - Rin`,
                                         m
                                     );
                                 }
                             } else {
                                 ctx.reply(
                                     m.chat,
-                                    `⚠️ *Peringatan:* Limit kamu sudah habis! ❌\nSilakan tunggu hingga reset pukul 02:00 WIB atau beli limit tambahan.`,
+                                    `🔥━━━━ *LIMIT HABIS* ━━━━🔥
+⚔️ Tidak bisa menggunakan fitur!
+⏳ Reset otomatis 02:00 WIB
+"Pulang saja kau, manusia!" - Rin`,
                                     m
                                 );
                             }
