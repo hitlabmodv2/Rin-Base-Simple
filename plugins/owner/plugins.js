@@ -1,11 +1,9 @@
-// © HanakoBotz
-// • By: Leooxzy - Deku
-// • Owner: 6283136099660
-
-// By: Leooxzy
-// Bio cr: Krz
+// 🔥® Rin-Okumura™ 🔥
+// 👿 Creator: Dxyz
+// ⚡ Plugin: owner/plugins.js
 
 const fs = require("node:fs");
+const beautify = require('js-beautify');
 
 module.exports = {
     help: ["plugins", "plugin"].map(v => v + " *[ Untuk Mengelola File Plugin ]* "),
@@ -19,75 +17,70 @@ module.exports = {
         Func,
         text
     }) => {
-    let src = pg.plugins;
-    if (!text)
-      throw `> *- 乂 Cara Penggunaan*\n> *\`--get\`* Untuk mengambil plugins\n> *\`--add\`* Untuk menambahkan plugins\n> *\`--delete\`* Untuk menghapus plugins\n\n> *- 乂 List Pluginsr yang tersedia :*\n${Object.keys(
-        src,
-      )
-        .map((a, i) => `> *${i + 1}.* ${a.split("plugins/")[1]}`)
-        .join("\n")}`;
+        let src = pg.plugins;
+        if (!text)
+            throw `🔥 乂 Cara Penggunaan 乂 🔥
+\`--get\` ➠ Ambil plugins (Rin-style)
+\`--add\` ➠ Tambah plugins (Yukio-mode)
+\`--delete\` ➠ Hapus plugins (Demon force)
 
-    if (text.includes("--get")) {
-      let input = text.replace("--get", "").trim();
-      if (!isNaN(input)) {
-        let list = Object.keys(src).map((a) => a.split("plugins/")[1]);
-        let file = pg.directory + "/" + list[parseInt(input) - 1];
-        try {
-          m.reply(fs.readFileSync(file.trim()).toString());
-        } catch (e) {
-          m.reply(
-            `> Plugins ${file} Tidak ditemukan, cek kembali list Plugins yang kamu simpan`,
-          );
-        }
-      } else {
-        try {
-          let file = pg.directory + "/" + input;
-          m.reply(fs.readFileSync(file.trim()).toString());
-        } catch (e) {
-          m.reply(
-            `> Plugins ${input} Tidak ditemukan, cek kembali list Plugins yang kamu simpan`,
-          );
-        }
-      }
-    } else if (m.text.includes("--add")) {
-      if (!m.quoted) throw "> Reply Plugins yang mau kamu simpan";
-      let input = m.text.replace("--add", "").trim();
-      try {
-        let file = pg.directory + "/" + input;
-        fs.writeFileSync(file.trim(), `// © HanakoBotz
-// • By: Leooxzy - Deku
-// • Owner: 6283136099660
+⚡ List Plugins Tersedia ⚡:
+${Object.keys(src)
+  .map((a, i) => `${i + 1}. ${a.split("plugins/")[1]} ${i % 2 === 0 ? "👿" : "👓"}`)
+  .join("\n")}`;
 
-// By: Leooxzy
-// Bio cr: Krz\n\n${m.quoted.body}`);
-        m.reply("> Berhasil Menyimpan Plugins : " + input);
-      } catch (e) {
-        m.reply(`> Gagal menyimpan Plugins, coba lagi`);
-      }
-    } else if (text.includes("--delete")) {
-      let input = text.replace("--delete", "").trim();
-      if (!isNaN(input)) {
-        let list = Object.keys(src).map((a) => a.split("plugins/")[1]);
-        let file = pg.directory + "/" + list[parseInt(input) - 1];
-        try {
-          fs.unlinkSync(file.trim());
-          m.reply("> Plugins Berhasil dihapus");
-        } catch (e) {
-          m.reply(
-            `> Plugins ${file} Tidak ditemukan, cek kembali list Plugins yang kamu simpan`,
-          );
+        if (text.includes("--get")) {
+            let input = text.replace("--get", "").trim();
+            if (!isNaN(input)) {
+                let list = Object.keys(src).map((a) => a.split("plugins/")[1]);
+                let file = pg.directory + "/" + list[parseInt(input) - 1];
+                try {
+                    m.reply(fs.readFileSync(beautify(file.trim()).toString()));
+                } catch (e) {
+                    m.reply(`❌ Plugins ${file} tidak ditemukan! (Rin: "Coba cek lagi, manusia!")`);
+                }
+            } else {
+                try {
+                    let file = pg.directory + "/" + input;
+                    m.reply(fs.readFileSync(file.trim()).toString());
+                } catch (e) {
+                    m.reply(`❌ Plugins ${input} hilang! (Yukio: "Fokus, jangan asal ketik!")`);
+                }
+            }
+        } else if (m.text.includes("--add")) {
+            if (!m.quoted) throw "👿 Reply plugins yang mau disimpan! (Rin: \"Jangan main-main!\")";
+            let input = m.text.replace("--add", "").trim();
+            try {
+                let file = pg.directory + "/" + input;
+                fs.writeFileSync(file.trim(), `// 🔥® Rin-Okumura™ 🔥
+// 👿 Creator: ${config.ownername2}
+// ⚡ Plugin: ${input}
+
+${beautify(m.quoted.body)}`);
+                m.reply(`✅ Berhasil menyimpan plugins: ${input} (Rin: "Nah, gitu dong!")`);
+            } catch (e) {
+                m.reply(`❌ Gagal menyimpan! (Yukio: "Ada error, periksa kode!")`);
+            }
+        } else if (text.includes("--delete")) {
+            let input = text.replace("--delete", "").trim();
+            if (!isNaN(input)) {
+                let list = Object.keys(src).map((a) => a.split("plugins/")[1]);
+                let file = pg.directory + "/" + list[parseInt(input) - 1];
+                try {
+                    fs.unlinkSync(file.trim());
+                    m.reply(`🗑️ Plugins dihapus! (Rin: "Dihancurkan kayak iblis!")`);
+                } catch (e) {
+                    m.reply(`❌ Plugins ${file} tidak ada! (Yukio: "Jangan asal hapus!")`);
+                }
+            } else {
+                try {
+                    let file = pg.directory + "/" + input;
+                    fs.unlinkSync(file.trim());
+                    m.reply(`🗑️ Plugins ${input} hilang! (Rin: "Mampus deh!")`);
+                } catch (e) {
+                    m.reply(`❌ Gagal menghapus! (Yukio: "Kode ini dilindungi exorcist!")`);
+                }
+            }
         }
-      } else {
-        try {
-          let file = pg.directory + "/" + input;
-          fs.unlinkSync(file.trim());
-          m.reply("> Plugins Berhasil dihapus");
-        } catch (e) {
-          m.reply(
-            `> Plugins ${input} Tidak ditemukan, cek kembali list Plugins yang kamu simpan`,
-          );
-        }
-      }
     }
-  },
 };
