@@ -20,7 +20,7 @@ const config = {
     isQr: true,
     prefix: [".", "?", "!", "/", "#"], //Tambahin sendiri prefix nya kalo kurang
     wagc: [ "https://chat.whatsapp.com/JyeT1hdCPJeLy95tzx5eyI", "https://chat.whatsapp.com/DfffgArbTUu46nqCgmCbE0" ],
-    saluran: '120363279195205552@newsletter', 
+    saluran: '120363401113812327@newsletter', 
     jidgroupnotif: '120363266755712733@g.us', 
     saluran2: '120363335701540699@newsletter', 
     jidgroup: '120363267102694949@g.us', 
