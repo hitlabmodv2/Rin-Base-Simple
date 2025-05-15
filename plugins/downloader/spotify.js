@@ -5,8 +5,9 @@
 // By: Leooxzy
 // Bio cr: Krz
 
-let axios = require('axios')
-let api = 'https://spotifyapi.caliphdev.com'
+import axios from 'axios';
+import fs from 'fs';
+let outputPath = `./tmp/spotify-${Date.now()}.mp3`
 
 let handler = async (m, {
     conn,
@@ -17,68 +18,49 @@ let handler = async (m, {
     if (!text) throw '⚠️ Masukan Link/Query !'
     if (Func.isUrl(text)) {
         if (!/open.spotify.com/.test(text)) throw '⚠️Mana Link Spotify Nya !';
-        const {
-            data: detail
-        } = await axios(api + '/api/info/track', {
-            post: 'GET',
-            params: {
-                url: text
-            }
-        });
-        let linkurl;
+        const { metadata: detail } = await Scraper.spotify.download(text);
 
-        try {
-            const { result: spdl } = await Scraper.spotiDown(detail.url)
-            linkurl = spdl.download
-        } catch (e) {
-            try {
-                linkurl = `${api + '/api/download/track?url=' + detail.url}`
-            } catch (e) {}
-        }
-        const caption = `📁 Spotify Downloader
-> • *Title:* ${detail.title || ''}
-> • *Artist:* ${detail.artist || ''}
-> • *Album:* ${detail.album || ''}
-> • *Url:* ${detail.url || ''}
-> • *Link-Download:* ${linkurl || ''}`;
-        m.reply(caption);
-        let audio;
-        try {
-            const { result: spdl } = await Scraper.spotiDown(detail.url)
-            audio = { url: spdl.download }
-        } catch (e) {
-            try {
-                const {
-                    data
-                } = await axios(api + '/api/download/track', {
-                    post: 'GET',
-                    params: {
-                        url: detail.url
-                    },
-                    responseType: 'arraybuffer'
-                });
-                audio = await Buffer.from(data)
-            } catch (e) {}
-        }
+        const caption = `╭───────────────────────────────╮
+│  🔥 RIN'S SPOTIFY DOWNLOADER  │
+├───────────────────────────────┤
+│ 🎵 ${detail.name || ''}               │
+│ 🎤 ${detail.artist || ''}          │
+│ 💿 ${detail.album_name || ''} │
+│ 🔗 ${detail.url || ''} │
+├───────────────────────────────┤
+│ 🗡️ (•̀ᴗ•́)و ︻デ═一            │
+│ 📥 Downloading...              │
+│ 💽 Format: MP3               │
+╰───────────────────────────────╯
+"Not bad... for human music." - Rin Okumura`;
+        ctx.reply(m.chat, caption, m);
+        const { download: spdl } = await Scraper.spotify.download(detail.url);
+        const media = await axios.get(spdl.file_url, { responseType: 'arraybuffer' });
+        await fs.writeFileSync(outputPath, media.data);
+        let audio = await fs.readFileSync(outputPath);
 
         conn.sendMessage(m.chat, {
-            audio,
+            audio: Buffer.from(audio),
             mimetype: 'audio/mpeg'
         }, {
             quoted: m
         });
+    await conn.delay(200);
+    await fs.unlinkSync(outputPath);
     } else {
-        const {
-            data: search
-        } = await axios(api + '/api/search/tracks', {
-            post: 'GET',
-            params: {
-                q: text
-            }
-        });
+        const search = await Scraper.spotify.search(text);
         if (!search && !search.length > 0) throw '⚠️ Maaf Lagu Yg Anda Search Tidak Di Temukan';
-        let message = `🔍 Search Spotify\n\n`;
-        message += search.map((a, i) => `\`[ ${i + 1} ]\`\n> • Title: ${a.title}\n> • Artist: ${a.artist}\n> • Url: ${a.url}`).join("\n\n");
+
+        let message = `╭────────────────────────────╮
+│ 🔥 RIN'S SPOTIFY PICKS     │
+├──┬─────────────────────────┤\n`;
+        message += search.map((a, i) => `│ [${i + 1}] │ ${a.title} - ${a.artist}           
+│  │ 🔗 ${a.url}
+├──┴─────────────────────────┤`
+).join("\n");
+        message += `\n│ (ง🔥Д🔥)ง︻デ═一 [search.length/50]       
+│ "Hurry up!" - Rin          
+╰────────────────────────────╯`
         await conn.sendAliasMessage(m.chat, {
             text: message
         }, search.map((a, i) => ({
@@ -94,4 +76,4 @@ handler.command = ["spotify", "spdl"];
 handler.limit = true;
 handler.loading = true;
 
-module.exports = handler;
+export default handler;
