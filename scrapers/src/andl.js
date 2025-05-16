@@ -1,10 +1,39 @@
+
 const axios = require('axios');
-const { wrapper } = require('axios-cookiejar-support');
 const FormData = require('form-data');
 const WebSocket = require('ws');
 const cheerio = require('cheerio');
 const { CookieJar } = require('tough-cookie');
 const crypto = require('crypto');
+
+const jar = new CookieJar();
+const client = axios.create({
+  timeout: 30000,
+  validateStatus: status => true,
+  headers: {
+    'Accept': 'application/json',
+    'User-Agent': 'Postify/1.0.0'
+  }
+});
+
+// Tambah interceptors untuk menangani cookie
+client.interceptors.request.use(async config => {
+  const cookies = await jar.getCookies(config.url);
+  config.headers.Cookie = cookies.map(c => `${c.key}=${c.value}`).join('; ');
+  return config;
+});
+
+client.interceptors.response.use(async response => {
+  const cookies = response.headers['set-cookie'];
+  if (cookies) {
+    await Promise.all(
+      cookies.map(cookie =>
+        jar.setCookie(cookie, response.config.url)
+      )
+    );
+  }
+  return response;
+});
 
 const amdl = {
   api: {
@@ -17,9 +46,7 @@ const amdl = {
     Accept: 'application/json',
     'User-Agent': 'Postify/1.0.0',
   },
-  jar: new CookieJar(),
-  client: wrapper(axios.create({ jar: new CookieJar() })),
-
+  client,
   ytRegex: /^((?:https?:)?\/\/)?((?:www|m|music)\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(?:embed\/)?(?:v\/)?(?:shorts\/)?([a-zA-Z0-9_-]{11})/,
 
   formats: {
